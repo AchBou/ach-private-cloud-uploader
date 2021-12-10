@@ -1,0 +1,21 @@
+{
+  "name": "uploader",
+  "version": "1.0.0",
+  "description": "an personal file uploader to save files on the  cloud",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ach",
+  "license": "ISC",
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.44.0",
+    "aws-sdk": "^2.1043.0",
+    "dotenv": "^10.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "crypto-js": "^4.1.1"
+  }
+}
