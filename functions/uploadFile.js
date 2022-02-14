@@ -8,17 +8,12 @@ import crypto from "crypto";
 export async function uploadFile(file){
     const fileStream = fs.readFileSync(file);
 
-    //console.log(fileStream)
-
     const hashSum = crypto.createHash('sha256');
     hashSum.update(fileStream);
 
     const hex = hashSum.digest('hex');
 
-    //console.log(hex);
-
     let fileExtension = path.basename(file).split('.')[1];
-    console.log(fileExtension);
     const uploadParams = {
         Bucket: process.env.BUCKET_NAME,
         Key: hex+'.'+fileExtension,
