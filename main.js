@@ -4,18 +4,32 @@ dotenv.config()
 import fs from 'fs';
 import path from 'path';
 import chokidar from 'chokidar'
+import sharp from 'sharp';
 
 import {listAllFiles} from "./functions/listFiles.js";
 import {uploadFile} from "./functions/uploadFile.js";
+import {uploadThumbnailFile} from "./functions/uploadThumbnail.js";
 
 
+async function generateThumbnail(filePath) {
+    return await sharp(filePath)
+        .resize(150,150,{
+            fit: sharp.fit.outside
+        })
+        .toFormat('jpeg')
+        .sharpen()
+        .toBuffer()
+}
 
 async function uploadAndDelete(file){
     try{
         const relativePath = '\\upload-zone\\'+file
         let filePath= path.resolve()+relativePath
-        await uploadFile(filePath);
+        let hex = await uploadFile(filePath);
         console.log('file '+ relativePath + ' uploaded')
+        await generateThumbnail(filePath).then(buffer=>{
+            uploadThumbnailFile(buffer, hex)
+        });
         fs.unlinkSync(filePath);
         console.log('file '+ relativePath + ' deleted')
     }

@@ -16,14 +16,14 @@ export async function uploadFile(file){
     let fileExtension = path.basename(file).split('.')[1];
     const uploadParams = {
         Bucket: process.env.BUCKET_NAME,
-        Key: hex+'.'+fileExtension,
+        Key: 'files/'+hex+'.'+fileExtension,
         Body: fileStream,
     };
 
     try {
-        const data = await s3Client.send(new PutObjectCommand(uploadParams));
+        await s3Client.send(new PutObjectCommand(uploadParams));
         console.log("Upload Success");
-        return data;
+        return hex;
     } catch (err) {
         console.log("Error", err);
     }

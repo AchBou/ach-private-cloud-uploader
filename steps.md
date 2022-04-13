@@ -1,15 +1,17 @@
-1- creating the upload to s3 mechanism ✅
+- creating the upload to s3 mechanism ✅
 
-2- finding a method to skip image redundancy (solution: saving the file with its hash instead of filename) ✅
+- finding a method to skip image redundancy (solution: saving the file with its hash instead of filename) ✅
 
-3- adding a sync mechanism to upload new files (a server with an action triggered on file add ?? a sync button on a UI ?? a sync script??)
+- adding a sync mechanism to upload new files ✅
 
-4- UI ??
+- adding thumbnails for a fast visual recognition of the file ✅
 
-4- finding a way to delete all uploaded content and still have easy access
+- UI ??
 
-4.1- UI ??
+- finding a way to delete all uploaded content and still have easy access
 
-5- a mechanism for easy sharing
+- UI ??
 
-6- labeling and categorizing the pictures
+- a mechanism for easy sharing
+
+- labeling and categorizing the pictures
