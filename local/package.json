@@ -17,8 +17,10 @@
   },
   "type": "module",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.180.0",
     "crypto-js": "^4.1.1",
     "express": "^4.17.2",
-    "sharp": "^0.30.3"
+    "sharp": "^0.30.3",
+    "uuid": "^9.0.0"
   }
 }

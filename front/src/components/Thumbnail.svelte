@@ -2,8 +2,8 @@
     export let src;
 </script>
 
-<div >
-    <img {src} alt="image">
+<div>
+    <img {src} alt="picture">
 </div>
 
 <style>
@@ -14,7 +14,6 @@
         padding: 5px;
         margin: 5px;
         border: 1px solid rgba(0, 0, 0, 0.8);
-
     }
 
     img {

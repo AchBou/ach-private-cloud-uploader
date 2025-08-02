@@ -1,11 +1,9 @@
-import dotenv  from 'dotenv'
+import dotenv  from 'dotenv';
 dotenv.config()
 
 import fs from 'fs';
 import path from 'path';
-import chokidar from 'chokidar'
-
-
+import chokidar from 'chokidar';
 import {uploadFile} from "./functions/uploadFile.js";
 import {uploadThumbnailFile} from "./functions/uploadThumbnail.js";
 
