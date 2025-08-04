@@ -37,9 +37,9 @@ async function main(){
         //await uploadAndDelete(file)
     }
 
-    // const data = await listAllFiles();
-    //console.log(data)
-    // console.log('Files currently in the warehouse: '+data.Contents.length)
+    const data = await listAllFiles();
+    console.log(data)
+    console.log('Files currently in the warehouse: '+data.Contents.length)
 }
 
 main().then(() => {

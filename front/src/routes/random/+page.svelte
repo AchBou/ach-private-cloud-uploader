@@ -1,51 +1,191 @@
 <script>
     import Button from "../../components/Button.svelte";
-    import {onMount} from "svelte";
+    import { onMount } from "svelte";
+    import { fade, fly } from 'svelte/transition';
 
     let randomSrc = "";
+    let isLoading = true;
+    let error = null;
 
     async function generateRandomPic() {
         try {
+            isLoading = true;
+            randomSrc = "";
+            error = null;
+
             let response = await fetch("https://50d1753uoh.execute-api.us-east-1.amazonaws.com/get-random-image");
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
             randomSrc = await response.text();
             console.log(randomSrc);
+            isLoading = false;
         } catch (err) {
             console.error(err);
+            error = err.message;
+            isLoading = false;
         }
     }
 
     onMount(generateRandomPic);
-
 </script>
 
-<div class="img-container">
-    {#if randomSrc}
-        <img class="random-image" src={randomSrc} alt="random image" />
-    {/if}
-</div>
+<div class="random-container">
+    <h2>Random Image</h2>
 
-<div class="generate-btn">
-    <Button  on:click={generateRandomPic} text="Another"/>
+    <div class="img-container">
+        {#if isLoading}
+            <div class="loading" in:fade>
+                <div class="spinner"></div>
+                <p>Loading a random image...</p>
+            </div>
+        {:else if error}
+            <div class="error" in:fade>
+                <p>Error loading image: {error}</p>
+                <button on:click={generateRandomPic}>Try Again</button>
+            </div>
+        {:else if randomSrc}
+            <div class="image-wrapper" in:fade={{ duration: 300 }}>
+                <img class="random-image" src={randomSrc} alt="random image" />
+            </div>
+        {/if}
+    </div>
+
+    <div class="controls">
+        <Button on:click={generateRandomPic} text="Get Another" primary={true} size="medium"/>
+    </div>
 </div>
 
 <style>
+    .random-container {
+        padding: 20px 0;
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 200px);
+    }
+
+    h2 {
+        color: #2c3e50;
+        margin-bottom: 30px;
+        text-align: center;
+        font-size: 2.4em;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+    }
+
     .img-container {
         background-color: #fff;
         text-align: center;
         display: flex;
         align-items: center;
-        width: 80%;
-        height: 78vh;
+        justify-content: center;
+        width: 90%;
+        flex: 1;
         margin: 0 auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+        position: relative;
     }
+
+    .image-wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .random-image {
-        display: block; /* Remove default inline-block spacing */
-        margin: 0 auto; /* Center the image horizontally */
-        max-height: 78vh;
+        display: block;
+        max-width: 100%;
+        max-height: 70vh;
+        object-fit: contain;
+        border-radius: 4px;
     }
-    .generate-btn {
-        position: fixed;
-        bottom: 50px;
-        left: 46%;
+
+    .controls {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 300px;
+    }
+
+    .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 4px solid #e74c3c;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .error {
+        text-align: center;
+        padding: 50px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        width: 80%;
+    }
+
+    .error p {
+        margin-bottom: 20px;
+        color: #555;
+        font-size: 1.1em;
+        font-weight: 400;
+        letter-spacing: 0.3px;
+    }
+
+    .loading p {
+        margin-top: 15px;
+        font-size: 1.1em;
+        font-weight: 300;
+        letter-spacing: 0.3px;
+        color: #555;
+    }
+
+    .error button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        transition: all 0.3s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .error button:hover {
+        background-color: #c0392b;
+    }
+
+    @media (max-width: 768px) {
+        .img-container {
+            width: 100%;
+        }
+
+        .random-image {
+            max-height: 60vh;
+        }
     }
 </style>
